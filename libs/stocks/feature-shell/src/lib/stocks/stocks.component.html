@@ -1,35 +1,34 @@
 <form [formGroup]="stockPickerForm">
   <mat-form-field>
-    <input
-      matInput
-      placeholder="Symbol e.g AAPL"
-      formControlName="symbol"
-      value=""
-    />
-    <mat-error
-      ><span
-        *ngIf="
+    <input matInput placeholder="{{stocksConst.PLACEHOLDER_SYMBOL}}" formControlName="symbol" value="" />
+    <mat-error><span *ngIf="
           !stockPickerForm.get('symbol').valid &&
           stockPickerForm.get('symbol').touched
-        "
-        >Please enter a symbol</span
-      >
+        ">{{stocksConst.SYMBOL}}</span>
     </mat-error>
   </mat-form-field>
-
   <mat-form-field>
-    <mat-label>Favorite time period</mat-label>
-    <mat-select formControlName="period">
-      <mat-option
-        *ngFor="let timePeriod of timePeriods"
-        [value]="timePeriod.value"
-      >
-        {{ timePeriod.viewValue }}
-      </mat-option>
-    </mat-select>
+    <input matInput formControlName="periodFrom" [matDatepicker]="pickerFrom" [max]="maxDateFrom"
+      placeholder="{{stocksConst.PLACEHOLDER_START_DATE}}">
+    <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+    <mat-datepicker #pickerFrom></mat-datepicker>
+    <mat-error>
+      <span *ngIf="!stockPickerForm.get('periodFrom').valid && stockPickerForm.get('periodFrom').touched">
+        {{stocksConst.FROM_DATE}}
+      </span>
+    </mat-error>
   </mat-form-field>
-
-  <button (click)="fetchQuote()" mat-raised-button>Go</button>
+  <mat-form-field>
+    <input matInput formControlName="periodTo" [matDatepicker]="pickerTo" [min]="minDateTo" [max]="maxDateTo"
+      placeholder="{{stocksConst.PLACEHOLDER_END_DATE}}">
+    <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+    <mat-datepicker #pickerTo></mat-datepicker>
+    <mat-error>
+      <span *ngIf="!stockPickerForm.get('periodTo').valid && stockPickerForm.get('periodTo').touched">
+        {{stocksConst.TO_DATE}}
+      </span>
+    </mat-error>
+  </mat-form-field>
+  <button (click)="fetchQuote()" mat-raised-button>{{stocksConst.GO_BUTTON}}</button>
 </form>
-
 <coding-challenge-chart [data$]="quotes$"></coding-challenge-chart>
